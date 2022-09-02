@@ -1,0 +1,35 @@
+{
+  "name": "nodejs-docker-boilerplate",
+  "version": "1.0.0",
+  "description": "NodeJS Express Docker Boilerplate",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node ./src/index.js",
+    "start:dev": "NODE_ENV=development nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anthonywong555/NodeJS-Docker-Boilerplate.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "docker"
+  ],
+  "author": "Anthony Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anthonywong555/NodeJS-Docker-Boilerplate/issues"
+  },
+  "homepage": "https://github.com/anthonywong555/NodeJS-Docker-Boilerplate#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
