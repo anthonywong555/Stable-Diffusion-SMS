@@ -6,9 +6,9 @@ RUN apk add dumb-init
 
 ENV NODE_ENV production
 
-RUN mkdir -p /usr/src/app/node_modules && chown -R node:node /usr/src/app
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
-WORKDIR /usr/src/app
+WORKDIR /home/node/app
 
 COPY package*.json ./
 
@@ -16,6 +16,6 @@ USER node
 
 RUN npm ci --only=production
 
-COPY --chown=node:node ./ /usr/src/app/
+COPY --chown=node:node ./ ./
 
 CMD [ "dumb-init", "node", "./src/index.js" ]

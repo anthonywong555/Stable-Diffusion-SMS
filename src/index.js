@@ -33,7 +33,7 @@ app.post('/sms', async (req, res) => {
     try {
         const {headers, body = ''} = req;
         const twilioSignature = headers['x-twilio-signature'];
-        const url = `${process.env.PRODUCTION_URL}/sms`;
+        const url = `${process.env.PRODUCTION_BASE_URL}/sms`;
         const requestIsValid = twilio.validateRequest(
             process.env.TWILIO_AUTH_TOKEN,
             twilioSignature,
@@ -115,12 +115,14 @@ const generateBannerBearImage = async ({fullURL, text}) => {
 
 const generateStableDiffusionImages = async (prompt) => {
     return new Promise((resolve, reject) => {
+        const samples = process.env.STABLE_DIFFUSION_SAMPLES ? parseInt(process.env.STABLE_DIFFUSION_SAMPLES) : 1;
+
         const stabilityClient = generate({
             prompt,
+            samples,
             apiKey: process.env.DREAMSTUDIO_API_KEY,
             width: process.env.BANNER_BEAR_IMAGE_TEMPLATE_IMAGE_WIDTH,
             height: process.env.BANNER_BEAR_IMAGE_TEMPLATE_IMAGE_HEIGHT,
-            samples: process.env.STABLE_DIFFUSION_SAMPLES,
             outDir: 'public'
         });
 
@@ -129,7 +131,7 @@ const generateStableDiffusionImages = async (prompt) => {
         stabilityClient.on('image', ({buffer, filePath}) => {
             results.push({buffer, filePath});
 
-            if(results.length == process.env.STABLE_DIFFUSION_SAMPLES) {
+            if(results.length === samples) {
                 resolve(results);
             }
         });
