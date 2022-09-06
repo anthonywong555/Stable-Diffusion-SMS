@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       # You will need this for the nodemon
-      - ./:/usr/src/app
+      - ./:/home/node/app
     env_file: .env
     ports:
       - "$PORT:$PORT"

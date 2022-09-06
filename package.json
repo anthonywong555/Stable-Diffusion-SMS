@@ -25,9 +25,11 @@
   },
   "homepage": "https://github.com/anthonywong555/NodeJS-Docker-Boilerplate#readme",
   "dependencies": {
+    "bannerbear": "^1.4.0",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "stability-ts": "^1.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
