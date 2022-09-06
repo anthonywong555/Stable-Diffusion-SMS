@@ -1,5 +1,7 @@
 # Stable Diffusion SMS
 
+![](./assets/demo.gif)
+
 This application allows you to use [Stable Diffusion](https://stability.ai/blog/stable-diffusion-public-release) on the go via SMS.
 
 ## Prerequisite
