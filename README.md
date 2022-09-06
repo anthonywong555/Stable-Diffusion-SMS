@@ -1,4 +1,4 @@
-# NodeJS-Docker-Boilerplate
+# Stable Diffusion SMS
 
 ### References
 - [Run the image as a non-root user](https://devcenter.heroku.com/articles/container-registry-and-runtime#run-the-image-as-a-non-root-user)
