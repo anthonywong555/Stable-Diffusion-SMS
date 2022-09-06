@@ -1,13 +1,68 @@
 # Stable Diffusion SMS
 
-### References
-- [Run the image as a non-root user](https://devcenter.heroku.com/articles/container-registry-and-runtime#run-the-image-as-a-non-root-user)
-- [Containerizing a Node.js Application for Development With Docker Compose](https://www.digitalocean.com/community/tutorials/containerizing-a-node-js-application-for-development-with-docker-compose)
-- [Environment variables in Compose](https://docs.docker.com/compose/environment-variables/)
-- [Samay1993 / Production-Grade-Workflow ](https://github.com/Samay1993/Production-Grade-Workflow)
-- [Using Docker for Node.js in Development and Production](https://dev.to/alex_barashkov/using-docker-for-nodejs-in-development-and-production-3cgp)
-- [Working with docker bind mounts and node_modules](https://burnedikt.com/dockerized-node-development-and-mounting-node-volumes/)
-- [Local Development with Docker Compose](https://devcenter.heroku.com/articles/local-development-with-docker-compose)
-- [Snyk - 10 best practices to containerize Node.js web applications with Docker](https://snyk.io/blog/10-best-practices-to-containerize-nodejs-web-applications-with-docker/)
-- [Snyk - 10 Docker Security Best Practices](https://snyk.io/blog/10-docker-image-security-best-practices/)
-- [Digital Ocean - How To Build a Node.js Application with Docker on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-build-a-node-js-application-with-docker-on-ubuntu-20-04)
+This application allows you to use [Stable Diffusion](https://stability.ai/blog/stable-diffusion-public-release) on the go via SMS.
+
+## Prerequisite
+
+You will need the following:
+
+- [Twilio Account SID and Auth Token](https://www.twilio.com/console)
+- [Twilio API Key](https://www.twilio.com/docs/iam/keys/api-key)
+- [Twilio Phone Number](https://console.twilio.com/us1/develop/phone-numbers/manage/search?frameUrl=%2Fconsole%2Fphone-numbers%2Fsearch%3Fx-target-region%3Dus1&currentFrameUrl=%2Fconsole%2Fphone-numbers%2Fsearch%3FisoCountry%3DUS%26searchTerm%3D%26searchFilter%3Dleft%26searchType%3Dnumber%26x-target-region%3Dus1%26__override_layout__%3Dembed%26bifrost%3Dtrue)
+- [Dreamstudio API Key](https://beta.dreamstudio.ai/membership)
+- [ngrok](https://ngrok.com/)
+- [Docker](https://www.docker.com/)
+
+## Getting Started
+
+### Bannerbear
+
+1. Create a [Bannerbear Account](https://www.bannerbear.com/).
+2. After creating the account, you want to add this [template](https://app.bannerbear.com/s/share-oQrPcDmM1t399Mn5rQbW4Qtt) to your project.
+![](./assets/Bannerbear-setup-1.png)
+1. Take a note of the **Template ID**. You will need this later.
+2. Take a note of the **Project API Key**. You can find the API key in your Project → Settings page.
+
+### Ngrok
+
+1. Execute the following command:
+
+```sh
+ngrok http 8080
+```
+
+2. Take a note of the **Forwarding URL**.
+
+![](./assets/ngrok-setup-1.png)
+
+### Twilio
+
+1. Navigate to your [Twilio Phone Numbers](https://console.twilio.com/us1/develop/phone-numbers/manage/incoming).
+2. Select one of your phone numbers.
+3. Scroll down to the *Messaging* section.
+4. Add your Forwarding URL with `/sms` append to it. It should look something like this:
+```sh
+https://1337.ngrok.io/sms
+```
+5. Click **Save**.
+
+### Docker
+
+1. Execute the following command:
+
+```sh
+$ git clone https://github.com/anthonywong555/Stable-Diffusion-SMS
+$ cd Stable-Diffusion-SMS
+$ npm install
+$ cp .env-example .env
+```
+
+2. Put all your credentials in the **.env** file.
+
+3. Execute the following command:
+
+```sh
+docker compose -f "docker-compose.dev.yml" up -d --build
+```
+
+4. Text to your Phone Number!
