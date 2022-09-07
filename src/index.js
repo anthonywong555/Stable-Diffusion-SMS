@@ -116,6 +116,7 @@ const generateBannerBearImage = async (image_url, text, templateId) => {
 const generateStableDiffusionImages = async (prompt) => {
   return new Promise((resolve, reject) => {
     const samples = process.env.STABLE_DIFFUSION_SAMPLES ? parseInt(process.env.STABLE_DIFFUSION_SAMPLES) : 1;
+    const results = [];
 
     const stabilityClient = generate({
       prompt,
