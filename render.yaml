@@ -1,0 +1,7 @@
+services:
+- type: web
+  name: stable-diffusion-sms
+  plan: starter
+  region: oregon
+  env: docker
+  numInstances: 1

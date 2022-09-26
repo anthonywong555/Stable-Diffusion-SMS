@@ -6,7 +6,7 @@
 import 'dotenv/config';
 import express from 'express';
 import bodyParser from 'body-parser';
-import stability from 'stability-ts';
+import stability from 'stability-client';
 import { Bannerbear } from 'bannerbear';
 import twilio from 'twilio';
 
@@ -18,7 +18,10 @@ const twilioClient = twilio(
   process.env.TWILIO_API_KEY_SECRET, 
   { accountSid: process.env.TWILIO_ACCOUNT_SID }
 );
+
 const bbClient = new Bannerbear(process.env.BANNER_BEAR_API_KEY);
+
+const { generateAsync } = stability;
 
 /**
  * Application
@@ -27,11 +30,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 8080;
 
-const { generate } = stability;
-
 app.post('/sms', async (req, res) => {
+  const {headers, body} = req;
   try {
-    const {headers, body = ''} = req;
     const twilioSignature = headers['x-twilio-signature'];
     const url = `${process.env.PRODUCTION_BASE_URL}/sms`;
     const requestIsValid = twilio.validateRequest(
@@ -55,7 +56,18 @@ app.post('/sms', async (req, res) => {
     }
   } catch (e) {
     console.error(`An error has occurred: \n${e}`);
-    return res.status(500).send('Internal Server Error');
+    const twilioRequest = body;
+    const {To, From} = twilioRequest;
+
+    try {
+      return await twilioClient.messages.create({
+        body: 'Sorry, it looks like an error has occured. Please try again later.',
+        to: From,
+        from: To
+      });
+    } catch(e) {
+      console.error(`An error has occurred when sending out the sms: \n${e}`);
+    }
   }
 });
 
@@ -63,6 +75,7 @@ const driver = async (twilioRequest) => {
   try {
     const {To, From, Body} = twilioRequest;
     const generatedImages = await generateStableDiffusionImages(Body);
+    console.log(`generatedImages`, generatedImages);
     const generatedImagesLocalURLs = generatedImages.map((aGeneratedImage) => aGeneratedImage.filePath);
     
     console.log(`generatedImagesLocalURLs: ${generatedImagesLocalURLs}`);
@@ -114,11 +127,10 @@ const generateBannerBearImage = async (image_url, text, templateId) => {
 }
 
 const generateStableDiffusionImages = async (prompt) => {
-  return new Promise((resolve, reject) => {
+  try {
     const samples = process.env.STABLE_DIFFUSION_SAMPLES ? parseInt(process.env.STABLE_DIFFUSION_SAMPLES) : 1;
-    const results = [];
 
-    const stabilityClient = generate({
+    const results = await generateAsync({
       prompt,
       samples,
       apiKey: process.env.DREAMSTUDIO_API_KEY,
@@ -126,22 +138,11 @@ const generateStableDiffusionImages = async (prompt) => {
       height: process.env.BANNER_BEAR_IMAGE_TEMPLATE_IMAGE_HEIGHT,
       outDir: 'public'
     });
-
-
-    stabilityClient.on('image', ({buffer, filePath}) => {
-      results.push({buffer, filePath});
-
-      if(results.length === samples) {
-        resolve(results);
-      }
-    });
-
-    stabilityClient.on('end', (response) => {
-      if(!response.isOk) {
-        reject(response);
-      }
-    });        
-  });
+    
+    return results.images; 
+  } catch (e) {
+    throw e;
+  }
 }
 
 app.use('/public', express.static('public'));
