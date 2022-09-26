@@ -75,7 +75,6 @@ const driver = async (twilioRequest) => {
   try {
     const {To, From, Body} = twilioRequest;
     const generatedImages = await generateStableDiffusionImages(Body);
-    console.log(`generatedImages`, generatedImages);
     const generatedImagesLocalURLs = generatedImages.map((aGeneratedImage) => aGeneratedImage.filePath);
     
     console.log(`generatedImagesLocalURLs: ${generatedImagesLocalURLs}`);
