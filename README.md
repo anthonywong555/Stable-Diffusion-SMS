@@ -77,6 +77,6 @@ docker compose -f "docker-compose.dev.yml" up -d --build
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
-2. In the Dashboard click on your `Stable Diffusion Service`.
+2. In the Dashboard click on your `Stable Diffusion SMS`.
 3. Click on Environment.
 4. Add the Environment Variables from the .env-example.
